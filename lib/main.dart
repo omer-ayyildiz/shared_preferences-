@@ -34,7 +34,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   TextEditingController _textEditingController = TextEditingController();
   SharedPreferences? sharedPreferencs;
-//  List<String> saveList = [];
+
   @override
   void initState() {
     super.initState();
@@ -52,9 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     var data = Provider.of<SharedProvider>(context);
     return Scaffold(
-      appBar: AppBar(
-          // The title text which will be shown on the action bar
-          title: const Text('Demo')),
+      appBar: AppBar(title: const Text('Demo')),
       body: Column(
         children: [
           Expanded(
@@ -64,12 +62,19 @@ class _MyHomePageState extends State<MyHomePage> {
               child: ListView.builder(
                 itemCount: listem.length,
                 itemBuilder: (context, index) {
-                  return Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: ListTile(
-                      title: Text(listem[index]),
+                  print(index);
+                  return Dismissible(
+                    key: UniqueKey(),
+                    onDismissed: (direction) {
+                      data.removeData(index);
+                    },
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: ListTile(
+                        title: Text(listem[index]),
+                      ),
                     ),
                   );
                 },

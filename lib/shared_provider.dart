@@ -18,4 +18,11 @@ class SharedProvider with ChangeNotifier {
 
     return gecici;
   }
+
+  void removeData(int key) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    listem.removeAt(key);
+    prefs.setStringList('listKey', listem);
+    notifyListeners();
+  }
 }
