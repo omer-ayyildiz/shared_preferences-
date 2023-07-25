@@ -65,9 +65,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   print(index);
                   return Dismissible(
                     key: UniqueKey(),
-                    onDismissed: (direction) {
-                      data.removeData(index);
+                    background: _deleteMethod(),
+                    confirmDismiss: (direction) {
+                      return _buildShowDialog(context, index, data);
                     },
+                    onDismissed: (direction) {},
                     child: Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15),
@@ -127,6 +129,65 @@ class _MyHomePageState extends State<MyHomePage> {
           )
         ],
       ),
+    );
+  }
+
+  Container _deleteMethod() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.red,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      padding: const EdgeInsets.all(10),
+      alignment: Alignment.centerLeft,
+      child: const Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Icon(
+            Icons.delete,
+            color: Colors.white,
+            size: 21,
+          ),
+          Icon(
+            Icons.delete,
+            color: Colors.white,
+            size: 21,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<bool?> _buildShowDialog(
+      BuildContext context, int index, SharedProvider data) async {
+    return await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          title: Text(
+            '${listem[index]} kaydını silmek istediğinizden emin misini ?',
+            style: const TextStyle(fontSize: 21),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                data.removeData(index);
+                Navigator.pop(context);
+              },
+              child: const Text('Evet'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Hayır'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
